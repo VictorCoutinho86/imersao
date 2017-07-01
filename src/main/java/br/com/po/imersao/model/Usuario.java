@@ -1,4 +1,4 @@
-package br.com.po.imersao;
+package br.com.po.imersao.model;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
