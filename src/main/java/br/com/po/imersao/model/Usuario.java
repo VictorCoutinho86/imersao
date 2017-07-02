@@ -6,7 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotBlank;
 
 @Entity
 public class Usuario implements Serializable {
@@ -17,10 +18,10 @@ public class Usuario implements Serializable {
 	@GeneratedValue(strategy = GenerationType.TABLE)
 	private Integer id;
 	
-	@NotNull
+	@NotBlank
 	private String nome;
 	
-	@NotNull
+	@NotBlank
 	private String email;
 
 	public Integer getId() {

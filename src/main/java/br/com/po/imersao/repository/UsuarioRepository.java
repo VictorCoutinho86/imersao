@@ -6,7 +6,6 @@ import br.com.po.imersao.model.Usuario;
 
 public interface UsuarioRepository extends CrudRepository<Usuario, Integer> {
 	
-	public Usuario findByEmail(String email);
-	
+	public Usuario findByEmail(String email);	
 	
 }
