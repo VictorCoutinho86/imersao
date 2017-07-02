@@ -30,35 +30,41 @@ public class UsuarioController {
 	}
 	
 	@GetMapping(path="/{id}")
-	public @ResponseBody Usuario findOne(@RequestBody Integer id){
+	public @ResponseBody ResponseEntity<Usuario> findOne(@RequestBody Integer id){
 		
-		return usuarioRepository.findOne(id);
+		return new ResponseEntity<Usuario>(usuarioRepository.findOne(id), HttpStatus.OK);
 	}
 
 	@PostMapping
-	public ResponseEntity<Usuario> add(@RequestBody Usuario usuario){
-		
-		usuarioRepository.save(usuario);
+	public ResponseEntity<String> add(@RequestBody Usuario usuario){
+		if(usuarioRepository.findByEmail(usuario.getEmail()) == null) {
+			usuarioRepository.save(usuario);
 
-		return new ResponseEntity<Usuario>(usuario, HttpStatus.ACCEPTED);
+			return new ResponseEntity<String>("Usuário criado com sucesso", HttpStatus.CREATED);
+		}
+		return new ResponseEntity<String>("Este email já está cadastrado em nosso sistema!", HttpStatus.CONFLICT);
 	}
 	
 	@DeleteMapping(path="/{id}")
-	public @ResponseBody String delete(@PathVariable(value="id") Integer id) {
+	public @ResponseBody ResponseEntity<String> delete(@PathVariable(value="id") Integer id) {
 		usuarioRepository.delete(id);
+		return new ResponseEntity<String>("Usuário deletado com sucesso",HttpStatus.GONE);
 		
-		return "Usuário deletado com sucesso";
+		
 	}
+
 	
 	@PutMapping(path="/{id}")
 	public ResponseEntity<Usuario> update(@PathVariable(value="id") Integer id, @RequestBody Usuario usuario){
-		Usuario user = usuarioRepository.findOne(id);
-		user.setEmail(usuario.getEmail());
-		user.setNome(usuario.getNome());
-		usuarioRepository.save(user);
 		
+		usuario.setId(id);
 		
-		return new ResponseEntity<Usuario>(usuario, HttpStatus.ACCEPTED);
+		if(usuarioRepository.findOne(id)!=null) {
+			
+			usuarioRepository.save(usuario);
+			return new ResponseEntity<Usuario>(usuario, HttpStatus.GONE);
+		}
+		return new ResponseEntity<Usuario>(usuario, HttpStatus.NOT_MODIFIED);
 		
 	}
 	
