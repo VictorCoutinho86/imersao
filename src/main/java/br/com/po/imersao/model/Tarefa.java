@@ -1,5 +1,6 @@
 package br.com.po.imersao.model;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 import javax.persistence.Entity;
@@ -8,11 +9,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 
-import org.springframework.format.annotation.DateTimeFormat;
-
 @Entity
-public class Tarefa {
+public class Tarefa implements Serializable {
 	
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
@@ -23,14 +24,12 @@ public class Tarefa {
 	@NotNull
 	private String descricao;
 	
-	@DateTimeFormat
 	private LocalDate dataCriacao;
 	
-	@DateTimeFormat
 	private LocalDate dataFim;
 	
-	@NotNull
-	private Usuario criador;
+	
+	private Integer criador;
 	
 
 	public Integer getId() {
@@ -71,6 +70,14 @@ public class Tarefa {
 
 	public void setDataFim(LocalDate dataFim) {
 		this.dataFim = dataFim;
+	}
+
+	public Integer getCriador() {
+		return criador;
+	}
+
+	public void setCriador(Integer criador) {
+		this.criador = criador;
 	}
 
 	@Override

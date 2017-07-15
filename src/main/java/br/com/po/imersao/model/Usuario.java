@@ -12,7 +12,7 @@ import org.hibernate.validator.constraints.NotBlank;
 @Entity
 public class Usuario implements Serializable {
 
-	private static final long serialVersionUID = 5759704785474392201L;
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
