@@ -31,13 +31,13 @@ public class UsuarioController {
 	}
 	
 	@GetMapping(path="/{id}")
-	public @ResponseBody ResponseEntity<Usuario> findOne(@RequestBody Integer id){
+	public @ResponseBody ResponseEntity<Usuario> findOne(@PathVariable(value="id") Integer id){
 		
 		return new ResponseEntity<Usuario>(usuarioRepository.findOne(id), HttpStatus.OK);
 	}
 
 	@PostMapping
-	public ResponseEntity<String> add(@RequestParam Usuario usuario){
+	public ResponseEntity<?> add(@RequestParam Usuario usuario){
 		if(usuarioRepository.findByEmail(usuario.getEmail()) == null) {
 			usuarioRepository.save(usuario);
 
