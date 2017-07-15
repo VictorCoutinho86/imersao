@@ -12,7 +12,7 @@ import javax.validation.constraints.NotNull;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
-public class Todo implements Serializable {
+public class Tarefa implements Serializable {
 
 	private static final long serialVersionUID = -6246916121644380680L;
 	
