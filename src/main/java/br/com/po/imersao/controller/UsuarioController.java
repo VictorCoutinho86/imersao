@@ -17,7 +17,7 @@ import br.com.po.imersao.model.Usuario;
 import br.com.po.imersao.repository.UsuarioRepository;
 
 @Controller
-@RequestMapping(path="/users")
+@RequestMapping(path="/user")
 public class UsuarioController {
 	
 	@Autowired
