@@ -31,26 +31,39 @@ public class UsuarioController {
 	}
 	
 	@GetMapping(path="/{id}")
-	public @ResponseBody ResponseEntity<Usuario> findOne(@PathVariable(value="id") Integer id){
+	public @ResponseBody ResponseEntity<?> findOne(@PathVariable(value="id") Integer id){
 		
-		return new ResponseEntity<Usuario>(usuarioRepository.findOne(id), HttpStatus.OK);
+		try {
+			return new ResponseEntity<Usuario>(usuarioRepository.findOne(id), HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<String>("Usuário não encontrado!", HttpStatus.NOT_FOUND);
+		}
 	}
 
 	@PostMapping
 	public ResponseEntity<String> add(@RequestBody Usuario usuario){
-		if(usuarioRepository.findByEmail(usuario.getEmail()) == null) {
-			usuarioRepository.save(usuario);
-
-			return new ResponseEntity<String>("Usuário criado com sucesso", HttpStatus.CREATED);
+		try {
+			if(usuarioRepository.findByEmail(usuario.getEmail())!=null) {
+				usuarioRepository.save(usuario);
+			}
+		}catch (Exception e) {
+			return new ResponseEntity<String>("Este email já está cadastrado em nosso sistema!", HttpStatus.CONFLICT);
 		}
-		return new ResponseEntity<String>("Este email já está cadastrado em nosso sistema!", HttpStatus.CONFLICT);
+		
+		return new ResponseEntity<String>("Usuário criado com sucesso!", HttpStatus.CREATED);
 	}
 	
 	@DeleteMapping(path="/{id}")
 	public @ResponseBody ResponseEntity<String> delete(@PathVariable(value="id") Integer id) {
-		usuarioRepository.delete(id);
-		return new ResponseEntity<String>("Usuário deletado com sucesso",HttpStatus.GONE);
 		
+		try {
+			usuarioRepository.delete(id);
+			
+		} catch (Exception e) {
+			return new ResponseEntity<String>("Não foi possivel realizar a exclusão!", HttpStatus.NOT_MODIFIED);
+		}
+		
+		return new ResponseEntity<String>("Usuário deletado com sucesso",HttpStatus.GONE);
 		
 	}
 
@@ -60,13 +73,15 @@ public class UsuarioController {
 		
 		usuario.setId(id);
 		
-		if(usuarioRepository.findOne(id)!=null) {
+		try {
+			usuarioRepository.findOne(id);
 			
 			usuarioRepository.save(usuario);
-			return new ResponseEntity<Usuario>(usuario, HttpStatus.GONE);
+		}catch (Exception e) {
+			return new ResponseEntity<Usuario>(usuario, HttpStatus.NOT_MODIFIED);
 		}
-		return new ResponseEntity<Usuario>(usuario, HttpStatus.NOT_MODIFIED);
 		
+		return new ResponseEntity<Usuario>(usuario, HttpStatus.GONE);
 	}
 	
 	

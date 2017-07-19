@@ -1,32 +1,29 @@
 package br.com.po.imersao.model;
 
-import java.io.Serializable;
-import java.time.LocalDate;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 @Entity
-public class Tarefa implements Serializable {
-	
-	private static final long serialVersionUID = 1L;
+public class Tarefa {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 	
-	@NotNull
+	@NotBlank
 	private String titulo;
 	
 	@NotNull
 	private String descricao;
 	
-	private LocalDate dataCriacao;
+	private String dataCriacao;
 	
-	private LocalDate dataFim;
+	private String dataFim;
 	
 	
 	private Integer criador;
@@ -56,19 +53,19 @@ public class Tarefa implements Serializable {
 		this.descricao = descricao;
 	}
 
-	public LocalDate getDataCriacao() {
+	public String getDataCriacao() {
 		return dataCriacao;
 	}
 
-	public void setDataCriacao(LocalDate dataCriacao) {
+	public void setDataCriacao(String dataCriacao) {
 		this.dataCriacao = dataCriacao;
 	}
 
-	public LocalDate getDataFim() {
+	public String getDataFim() {
 		return dataFim;
 	}
 
-	public void setDataFim(LocalDate dataFim) {
+	public void setDataFim(String dataFim) {
 		this.dataFim = dataFim;
 	}
 

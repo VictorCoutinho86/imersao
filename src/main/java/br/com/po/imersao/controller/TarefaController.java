@@ -1,5 +1,8 @@
 package br.com.po.imersao.controller;
 
+import java.time.LocalDate;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +21,7 @@ import br.com.po.imersao.repository.TarefaRepository;
 
 @Controller
 @RequestMapping("/todo")
-public class TarefaController {
+public class TarefaController {	
 	
 	@Autowired
 	private TarefaRepository tarefaRepository;
@@ -31,30 +34,50 @@ public class TarefaController {
 	}
 	
 	@GetMapping(path="/{id}")
-	public @ResponseBody ResponseEntity<Tarefa> findById(@RequestBody Integer id){
-		
-		return new ResponseEntity<Tarefa>(tarefaRepository.findOne(id), HttpStatus.OK);
-	}
-
-	@PostMapping
-	public ResponseEntity<String> add(@RequestBody Tarefa usuario){
+	public @ResponseBody ResponseEntity<?> findById(@PathVariable(value="id") Integer id){
 		
 		try {
-			tarefaRepository.save(usuario);
+			return new ResponseEntity<Tarefa>(tarefaRepository.findOne(id), HttpStatus.OK);
+		}catch (Exception e) {
+			return new ResponseEntity<String>("Tarefa não encontrada.", HttpStatus.NOT_FOUND);		}	
+	}
+	
+	
+	@GetMapping(path="/criador/{id}")
+	public @ResponseBody ResponseEntity<?> findByCriador(@PathVariable(value="id") Integer id){
+		
+			try {
+				return new ResponseEntity<List<Tarefa>>(tarefaRepository.findByCriador(id), HttpStatus.OK);
+			}catch (Exception e) {
+				return new ResponseEntity<String>("Usuário não encontrado.", HttpStatus.NOT_FOUND);
+			}
+		}
 
-			return new ResponseEntity<String>("Usuário criado com sucesso", HttpStatus.CREATED);
+	@PostMapping
+	public ResponseEntity<String> add(@RequestBody Tarefa tarefa){
+		
+		try {
+			// Uma tarefa sempre recebe HOJE como valor
+			tarefa.setDataCriacao(LocalDate.now().toString());
+			tarefaRepository.save(tarefa);
 			
 		}catch (Exception e) {
-			return new ResponseEntity<String>("Este email já está cadastrado em nosso sistema!",
-					HttpStatus.CONFLICT);		}
+			return new ResponseEntity<String>("Não foi possivel cadastrar esta tarefa",
+					HttpStatus.CONFLICT);
+		}
+		return new ResponseEntity<String>("Tarefa criado com sucesso", HttpStatus.CREATED);
 		
 	}
 	
 	@DeleteMapping(path="/{id}")
 	public @ResponseBody ResponseEntity<String> delete(@PathVariable(value="id") Integer id) {
-		tarefaRepository.delete(id);
-		return new ResponseEntity<String>("Usuário deletado com sucesso",HttpStatus.OK);
 		
+		try {
+			tarefaRepository.delete(id);
+		}catch (Exception e) {
+			return new ResponseEntity<String>("Não foi possivel realizar a exclusão", HttpStatus.NOT_MODIFIED);
+		}
+		return new ResponseEntity<String>("Tarefa deletado com sucesso",HttpStatus.OK);
 		
 	}
 
@@ -64,13 +87,14 @@ public class TarefaController {
 		
 		tarefa.setId(id);
 		
-		if(tarefaRepository.findOne(id)!=null) {
+		try{
 			
+			if(tarefaRepository.findOne(id)!=null) {
 			tarefaRepository.save(tarefa);
-			return new ResponseEntity<Tarefa>(tarefa, HttpStatus.OK);
+			}
+		}catch (Exception e) {
+			return new ResponseEntity<Tarefa>(tarefa, HttpStatus.NOT_MODIFIED);
 		}
-		return new ResponseEntity<Tarefa>(tarefa, HttpStatus.NOT_MODIFIED);
-		
+		return new ResponseEntity<Tarefa>(tarefa, HttpStatus.OK);
 	}
-
 }

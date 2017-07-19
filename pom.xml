@@ -37,6 +37,13 @@
 			<scope>test</scope>
 		</dependency>
 
+		<!-- Com essa dependencia o projeto realiza o refresh da aplicação automaticamente, 
+			sempre que é feita uma alteração no codigo -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+		</dependency>
+
 	</dependencies>
 
 	<properties>
