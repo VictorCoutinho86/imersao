@@ -65,7 +65,7 @@ public class TarefaController {
 			return new ResponseEntity<String>("Não foi possivel cadastrar esta tarefa",
 					HttpStatus.CONFLICT);
 		}
-		return new ResponseEntity<String>("Tarefa criado com sucesso", HttpStatus.CREATED);
+		return new ResponseEntity<String>("Tarefa criado com sucesso", HttpStatus.OK);
 		
 	}
 	

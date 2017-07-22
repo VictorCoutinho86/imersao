@@ -32,26 +32,27 @@ public class UsuarioController {
 	
 	@GetMapping(path="/{id}")
 	public @ResponseBody ResponseEntity<?> findOne(@PathVariable(value="id") Integer id){
-		
-		try {
-			return new ResponseEntity<Usuario>(usuarioRepository.findOne(id), HttpStatus.OK);
-		} catch (Exception e) {
+		Usuario usuario = usuarioRepository.findOne(id);
+		if(usuario!=null) {
+			return new ResponseEntity<Usuario>(usuario, HttpStatus.OK);
+		} else {
 			return new ResponseEntity<String>("Usuário não encontrado!", HttpStatus.NOT_FOUND);
 		}
 	}
 
 	@PostMapping
 	public ResponseEntity<String> add(@RequestBody Usuario usuario){
-		try {
-			if(usuarioRepository.findByEmail(usuario.getEmail())!=null) {
-				usuarioRepository.save(usuario);
-			}
-		}catch (Exception e) {
-			return new ResponseEntity<String>("Este email já está cadastrado em nosso sistema!", HttpStatus.CONFLICT);
-		}
 		
-		return new ResponseEntity<String>("Usuário criado com sucesso!", HttpStatus.CREATED);
+			if(usuarioRepository.findByEmail(usuario.getEmail())==null) {
+				usuarioRepository.save(usuario);
+				return new ResponseEntity<String>("Usuário criado com sucesso!", HttpStatus.OK);
+			}else {
+
+			return new ResponseEntity<String>("Este email já está cadastrado em nosso sistema!", HttpStatus.CONFLICT);
+			}
+		
 	}
+		
 	
 	@DeleteMapping(path="/{id}")
 	public @ResponseBody ResponseEntity<String> delete(@PathVariable(value="id") Integer id) {
@@ -63,7 +64,7 @@ public class UsuarioController {
 			return new ResponseEntity<String>("Não foi possivel realizar a exclusão!", HttpStatus.NOT_MODIFIED);
 		}
 		
-		return new ResponseEntity<String>("Usuário deletado com sucesso",HttpStatus.GONE);
+		return new ResponseEntity<String>("Usuário deletado com sucesso",HttpStatus.OK);
 		
 	}
 
