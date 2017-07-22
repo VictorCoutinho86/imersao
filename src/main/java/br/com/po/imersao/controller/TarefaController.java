@@ -47,13 +47,22 @@ public class TarefaController {
 	
 	@GetMapping(path="/criador/{id}")
 	public @ResponseBody ResponseEntity<?> findByCriador(@PathVariable(value="id") Integer id){
-		
-			try {
-				return new ResponseEntity<List<Tarefa>>(tarefaRepository.findByCriador(id), HttpStatus.OK);
-			}catch (Exception e) {
-				return new ResponseEntity<String>("Usuário não encontrado.", HttpStatus.NOT_FOUND);
-			}
+		try {
+			return new ResponseEntity<List<Tarefa>>(tarefaRepository.findByCriador(id), HttpStatus.OK);
+		}catch (Exception e) {
+			return new ResponseEntity<String>("Usuário não encontrado.", HttpStatus.NOT_FOUND);
 		}
+	}
+	
+	@GetMapping(path="/titulo/{titulo}")
+	public @ResponseBody ResponseEntity<?> findByTitulo(@PathVariable(value="titulo") String titulo) {
+		System.out.println(titulo);
+		try {
+			return new ResponseEntity<List<Tarefa>>(tarefaRepository.findByTitulo(titulo), HttpStatus.OK);
+		}catch (Exception e) {
+			return new ResponseEntity<String>("Usuário não encontrado.", HttpStatus.NOT_FOUND);
+		}
+	}
 
 	@PostMapping
 	public ResponseEntity<String> add(@RequestBody Tarefa tarefa){

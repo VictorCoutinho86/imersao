@@ -11,5 +11,7 @@ public interface TarefaRepository extends CrudRepository<Tarefa, Integer> {
 	public Tarefa findById(Integer id);
 	
 	public List<Tarefa> findByCriador(Integer criador);
+	
+	public List<Tarefa> findByTitulo(String titulo);
 
 }
