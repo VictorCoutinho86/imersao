@@ -20,7 +20,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import br.com.po.imersao.model.Tarefa;
 import br.com.po.imersao.repository.TarefaRepository;
 
-@CrossOrigin(origins = "http://localhost:4200")
+//@CrossOrigin(origins = "http://localhost:4200") // Angular
+@CrossOrigin(origins = "http://localhost:8100") // Ionic
 @Controller
 @RequestMapping("/todo")
 public class TarefaController {	

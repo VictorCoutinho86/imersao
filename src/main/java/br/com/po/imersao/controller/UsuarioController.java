@@ -17,7 +17,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import br.com.po.imersao.model.Usuario;
 import br.com.po.imersao.repository.UsuarioRepository;
 
-@CrossOrigin(origins = "http://localhost:4200")
+//@CrossOrigin(origins = "http://localhost:4200") // Angular
+@CrossOrigin(origins = "http://localhost:8100") // Ionic
 @Controller
 @RequestMapping(path="/user")
 public class UsuarioController {
