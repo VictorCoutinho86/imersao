@@ -1,6 +1,7 @@
 package br.com.po.imersao.controller;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,20 +66,24 @@ public class TarefaController {
 		}
 	}
 
-	@PostMapping
-	public ResponseEntity<String> add(@RequestBody Tarefa tarefa){
+	@PostMapping(produces="application/json")
+	public /*ResponseEntity<String>*/HashMap<String, String> add(@RequestBody Tarefa tarefa){
+		HashMap<String, String> map = new HashMap<>();
 		
 		try {
 			// Uma tarefa sempre recebe HOJE como valor
 			tarefa.setDataCriacao(LocalDate.now().toString());
 			tarefaRepository.save(tarefa);
 			
+			map.put("mensagem", "Tarefa criada com sucesso.");
+			
 		}catch (Exception e) {
-			return new ResponseEntity<String>("Não foi possivel cadastrar esta tarefa",
-					HttpStatus.CONFLICT);
+//			return new ResponseEntity<String>("Não foi possivel cadastrar esta tarefa",
+//					HttpStatus.CONFLICT);
+			map.put("mensagem", "Falha ao criar tarefa.");
 		}
-		return new ResponseEntity<String>("Tarefa criado com sucesso", HttpStatus.OK);
-		
+//		return new ResponseEntity<String>("Tarefa criado com sucesso", HttpStatus.OK);
+		return map;
 	}
 	
 	@DeleteMapping(path="/{id}")
