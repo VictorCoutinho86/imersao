@@ -87,15 +87,19 @@ public class TarefaController {
 	}
 	
 	@DeleteMapping(path="/{id}")
-	public @ResponseBody ResponseEntity<String> delete(@PathVariable(value="id") Integer id) {
+	public HashMap<String, String>/*@ResponseBody ResponseEntity<String>*/ delete(@PathVariable(value="id") Integer id) {
+		HashMap<String, String> map = new HashMap<>();
 		
 		try {
 			tarefaRepository.delete(id);
+			
+			map.put("mensagem", "Tarefa deletada com sucesso.");
 		}catch (Exception e) {
-			return new ResponseEntity<String>("Não foi possivel realizar a exclusão", HttpStatus.NOT_MODIFIED);
+//			return new ResponseEntity<String>("Não foi possivel realizar a exclusão", HttpStatus.NOT_MODIFIED);
+			map.put("mensagem", "Falha ao deletar tarefa.");
 		}
-		return new ResponseEntity<String>("Tarefa deletado com sucesso",HttpStatus.OK);
-		
+//		return new ResponseEntity<String>("Tarefa deletado com sucesso",HttpStatus.OK);
+		return map;
 	}
 
 	
