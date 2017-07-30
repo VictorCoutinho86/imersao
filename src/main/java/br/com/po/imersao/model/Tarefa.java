@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
@@ -21,12 +22,13 @@ public class Tarefa {
 	@NotNull
 	private String descricao;
 	
+
 	private String dataCriacao;
 	
 	private String dataFim;
 	
-	
-	private Integer criador;
+	@OneToOne
+	private Usuario usuario;
 	
 
 	public Integer getId() {
@@ -53,6 +55,7 @@ public class Tarefa {
 		this.descricao = descricao;
 	}
 
+
 	public String getDataCriacao() {
 		return dataCriacao;
 	}
@@ -69,12 +72,12 @@ public class Tarefa {
 		this.dataFim = dataFim;
 	}
 
-	public Integer getCriador() {
-		return criador;
+	public Usuario getUsuario() {
+		return usuario;
 	}
 
-	public void setCriador(Integer criador) {
-		this.criador = criador;
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
 	}
 
 	@Override

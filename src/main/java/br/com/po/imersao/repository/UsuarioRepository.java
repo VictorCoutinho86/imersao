@@ -1,11 +1,23 @@
 package br.com.po.imersao.repository;
 
-import org.springframework.data.repository.CrudRepository;
+import java.util.List;
 
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import br.com.po.imersao.model.Tarefa;
 import br.com.po.imersao.model.Usuario;
 
-public interface UsuarioRepository extends CrudRepository<Usuario, Integer> {
+public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
+	
+	
+	
+	public Usuario findByNomeIsLike(String nome);
+	
 	
 	public Usuario findByEmail(String email);	
+	
+	public Usuario findByTarefasId(Integer id);
+	
+	public List<Tarefa> findById(Integer id);
 	
 }

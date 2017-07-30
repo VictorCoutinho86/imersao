@@ -1,9 +1,12 @@
 package br.com.po.imersao.model;
 
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -19,6 +22,9 @@ public class Usuario {
 	
 	@NotBlank
 	private String email;
+	
+	@OneToMany
+	private List<Tarefa> tarefas;
 
 	public Integer getId() {
 		return id;

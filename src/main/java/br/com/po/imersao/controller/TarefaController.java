@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.po.imersao.model.Tarefa;
 import br.com.po.imersao.repository.TarefaRepository;
 
-//@CrossOrigin(origins = "http://localhost:4200") // Angular
+//@CrossOrigin(origins = "http://localhost:4200") Angular
 @CrossOrigin(origins = "http://localhost:8100") // Ionic
 @RestController
 @RequestMapping("/todo")
@@ -50,7 +50,7 @@ public class TarefaController {
 	@GetMapping(path="/criador/{id}")
 	public @ResponseBody ResponseEntity<?> findByCriador(@PathVariable(value="id") Integer id){
 		try {
-			return new ResponseEntity<List<Tarefa>>(tarefaRepository.findByCriador(id), HttpStatus.OK);
+			return new ResponseEntity<List<Tarefa>>(tarefaRepository.findByUsuarioId(id), HttpStatus.OK);
 		}catch (Exception e) {
 			return new ResponseEntity<String>("Usuário não encontrado.", HttpStatus.NOT_FOUND);
 		}
@@ -58,13 +58,24 @@ public class TarefaController {
 	
 	@GetMapping(path="/titulo/{titulo}")
 	public @ResponseBody ResponseEntity<?> findByTitulo(@PathVariable(value="titulo") String titulo) {
-		System.out.println(titulo);
-		try {
-			return new ResponseEntity<List<Tarefa>>(tarefaRepository.findByTitulo(titulo), HttpStatus.OK);
-		}catch (Exception e) {
-			return new ResponseEntity<String>("Usuário não encontrado.", HttpStatus.NOT_FOUND);
+		
+		if(tarefaRepository.findByTituloContains(titulo)!=null) {
+			return new ResponseEntity<List<Tarefa>>(tarefaRepository.findByTituloContains(titulo), HttpStatus.OK);
+		} else {
+			return new ResponseEntity<String>("Não foi encontrada nenhuma tarefa com " + titulo, HttpStatus.NOT_FOUND);
 		}
 	}
+	
+/*	@GetMapping(path="/titulo/criacao")
+	public ResponseEntity<?> findByIntervalo(@RequestBody String inicio, @RequestBody String fim){
+		
+		try {
+			return new ResponseEntity<List<Tarefa>>(tarefaRepository.DataCriacaoInBetween(inicio, fim), HttpStatus.OK);
+		}catch (Exception e) {
+			// TODO: handle exception
+			return new ResponseEntity<String>("Nenhuma tarefa encontrada no intervalo informado", HttpStatus.NOT_FOUND);
+		}
+	}*/
 
 	@PostMapping(produces="application/json")
 	public /*ResponseEntity<String>*/HashMap<String, String> add(@RequestBody Tarefa tarefa){
