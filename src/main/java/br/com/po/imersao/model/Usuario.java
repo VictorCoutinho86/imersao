@@ -2,7 +2,9 @@ package br.com.po.imersao.model;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -20,10 +22,18 @@ public class Usuario {
 	@NotBlank
 	private String nome;
 	
+	// Caminho absolute para a imagem do usuario
+	private String avatar;
+	
+	// Conta ativa?
+	private Boolean status;
+	
+	private String celular;
+	
 	@NotBlank
 	private String email;
 	
-	@OneToMany
+	@OneToMany(mappedBy = "usuario", fetch=FetchType.LAZY)
 	private List<Tarefa> tarefas;
 
 	public Integer getId() {
@@ -50,6 +60,37 @@ public class Usuario {
 		this.email = email;
 	}
 
+	public String getAvatar() {
+		return avatar;
+	}
+
+	public void setAvatar(String avatar) {
+		this.avatar = avatar;
+	}
+
+	public Boolean getStatus() {
+		return status;
+	}
+
+	public void setStatus(Boolean status) {
+		this.status = status;
+	}
+
+	public String getCelular() {
+		return celular;
+	}
+
+	public void setCelular(String celular) {
+		this.celular = celular;
+	}
+
+	public List<Tarefa> getTarefas() {
+		return tarefas;
+	}
+
+	public void setTarefas(List<Tarefa> tarefas) {
+		this.tarefas = tarefas;
+	}
 
 	@Override
 	public int hashCode() {
